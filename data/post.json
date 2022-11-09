@@ -1,0 +1,14 @@
+[
+    {
+        "title": "The Last of Us",
+        "content": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+        "imageURL":"https://dagodreampark.co.id/media/k2/items/cache/86e8e67edae9219d12d438efd5f5a939_XL.jpg",
+        "UserId":2
+    },
+    {
+        "title": "The Beggining",
+        "content": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+        "imageURL":"https://www.gardaoto.com/wp-content/uploads/2022/09/10-Pemandangan-Alam-Paling-Indah-yang-Wajib-Kalian-Datangi.jpg",
+        "UserId":3
+    }
+]
