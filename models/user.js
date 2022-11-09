@@ -2,6 +2,8 @@
 const {
   Model
 } = require('sequelize');
+var bcrypt = require('bcryptjs')
+
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -25,6 +27,9 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   User.beforeCreate((user) => {
+    var salt = bcrypt.genSaltSync(10)
+    var hash = bcrypt.hashSync(user.password, salt)
+    user.password = hash
     user.role = false
   })
 
