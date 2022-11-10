@@ -1,4 +1,5 @@
 const {User, Post} = require('../models')
+var bcrypt = require('bcryptjs')
 
 class Controller{
     static home(req, res){
@@ -11,9 +12,6 @@ class Controller{
         let {title, content, imageURL} = req.body
     }
 
-    static registerForm(req, res){
-        res.render('register')
-    }
     static register(req, res){
         let {email, password} = req.body
         User.create({email, password})
@@ -21,19 +19,20 @@ class Controller{
             .catch(err => res.send(err))
     }
 
-    static loginForm(req, res){
-        res.render('login')
-    }
     static login(req, res){
         let {email, password} = req.body
-        User.findOne({where: {
-            email, password
-        }})
+        User.findOne({where: {email}})
             .then(data => {
                 if(data){
-                    res.send('login berhasil')
+                    let isValidPassword = bcrypt.compareSync(password, data.password)
+                    if(isValidPassword){
+                        req.session.userId = data.id
+                        res.redirect('/home')
+                    }else{
+                        res.redirect('/?error=Invalid Email or Password')
+                    }
                 }else{
-                    res.redirect('/login?error=user not found')
+                    res.redirect('/?error=Invalid Email or Password')
                 }
             })
             .catch(err => res.send(err))
