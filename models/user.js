@@ -35,7 +35,18 @@ module.exports = (sequelize, DataTypes) => {
         msg: 'Email address already in use'
       }
     },
-    password: DataTypes.STRING,
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'Password cannot be empty'
+        },
+        notEmpty: {
+          msg: 'Password cannot be empty'
+        }
+      }
+    },
     role: DataTypes.BOOLEAN
   }, {
     sequelize,
