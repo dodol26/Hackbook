@@ -139,7 +139,7 @@ class Controller {
         } else {
             User.findOne({ where: { id: UserId } })
                 .then(data => {
-                    res.render('editProfile', { data })
+                    res.render('editForm', { data })
                 })
                 .catch(err => res.send(err))
         }
