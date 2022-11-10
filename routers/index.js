@@ -39,6 +39,6 @@ router.get('/home/downVote/:PostId', Controller.downVote)
 router.get('/home/delete/:PostId', Controller.deletePost)
 
 router.get('/profile/edit/:UserId', Controller.editProfileForm)
-router.post('/profile/edit/:UserId', Controller.editProfile)
+router.post('/profile/edit/:UserId', upload.single('profilePicture'), Controller.editProfile)
 
 module.exports = router

@@ -1,5 +1,5 @@
 const { User, Post, Profile } = require('../models')
-const { hashingPassword, comparingPassword } = require('../helpers')
+const { comparingPassword } = require('../helpers')
 const { Op } = require('sequelize')
 
 class Controller {
@@ -137,7 +137,7 @@ class Controller {
         if (userId != UserId) {
             return res.redirect(`/home?error=Cannot edit other person profile`)
         } else {
-            User.findOne({ where: { id: UserId } })
+            Profile.findOne({ where: { id: UserId } })
                 .then(data => {
                     res.render('editForm', { data })
                 })
@@ -147,8 +147,23 @@ class Controller {
     static editProfile(req, res) {
         let { userId } = req.session
         let { UserId } = req.params
-        let { name, dateOfBirth, } = req.body
+        let { name, dateOfBirth, aboutMe, gender } = req.body
         let profilePicture = req.file.path
+        if (userId != UserId) {
+            return res.redirect(`/home?error=Cannot edit other person profile`)
+        } else {
+            Profile.update({ name, dateOfBirth, aboutMe, gender, profilePicture },
+                { where: { id: UserId } })
+                .then(data => res.redirect('/home'))
+                .catch(err => {
+                    if (err.name == 'SequelizeUniqueConstraintError') {
+                        let errors = err.errors.map(el => el.message)
+                        res.redirect(`/profile/edit/${UserId}?error=${errors}`)
+                    } else {
+                        res.send(err)
+                    }
+                })
+        }
     }
 }
 
