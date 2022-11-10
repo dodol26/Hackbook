@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="../public/assets/css/style2.css">
     <script src="https://kit.fontawesome.com/13230e701c.js" crossorigin="anonymous"></script>
 </head>
+
 <body>
     <nav>
         <div class="nav-left">
@@ -25,23 +27,25 @@
             </div>
             <!-- user login icon nav -->
             <div class="nav-user-icon online" onclick="settingsMenuToggle()">
-                <img src="../public/assets/images/profile-pic.png" alt="">
+                <img src="<%= dataUser.Profile.profilePicture  %>" alt="">
             </div>
 
         </div>
         <!-- settings menu -->
-        <div class="settings-menu" >
+        <div class="settings-menu">
             <div id="dark-btn">
                 <span></span>
             </div>
+            <!-- profile pict di dalem logout-->
             <div class="settings-menu-inner">
                 <div class="user-profile">
-                    <img src="../public/assets/images/profile-pic.png">
+                    <img src="<%= dataUser.Profile.profilePicture  %>">
                     <div>
                         <p>
-                            My name
+                            <%= dataUser.Profile.name %>
                         </p>
-                       <a href="#">See Your Profile</a>
+                        <a href="#">See Your Profile</a>
+
                     </div>
                 </div>
                 <hr>
@@ -51,7 +55,7 @@
                         <p>
                             Give Feedback
                         </p>
-                       <a href="#">Help us to improve</a>
+                        <a href="#">Help us to improve</a>
                     </div>
                 </div>
                 <hr>
@@ -74,7 +78,7 @@
 
 
             </div>
-           
+
         </div>
     </nav>
 
@@ -95,7 +99,7 @@
                 <a href="#"> <img src="../public/assets/images/shortcut-2.png">Web Design course</a>
                 <a href="#"> <img src="../public/assets/images/shortcut-3.png">Full Stack Developer</a>
                 <a href="#"> <img src="../public/assets/images/shortcut-4.png">Website Experts</a>
-         
+
             </div>
         </div>
         <!-- main content -->
@@ -126,57 +130,65 @@
 
             <div class="write-post-container">
                 <div class="user-profile">
-                    <img src="../public/assets/images/profile-pic.png">
+                    <img src="<%= dataUser.Profile.profilePicture  %>">
                     <div>
                         <p>
-                            My name
+                            <%= dataUser.Profile.name %>
                         </p>
                         <small>Public <i class="fa-solid fa-caret-down"></i></small>
                     </div>
                 </div>
                 <!-- post input area -->
-                <form action=""method="POST">
-                <div class="post-input-container">
-                    <textarea rows="3" name="content"placeholder="What's on your mind,jhon?"></textarea>
-                    <div class="add-post-links">
-                       <input type="file" name="imageUrl">
-                       <button type="submit">Submit</button>
-                    </div>
-                </div>
-            </form>
-            </div>
-                        <!-- kalau mau nambah post ininya di ikut diloop -->
-            <div class="post-container">
-                <div class="post-row">
-                    <div class="user-profile">
-                        <img src="../public/assets/images/profile-pic.png">
-                        <div>
-                            <p>
-                                My name
-                            </p>
-                            <span>June 24 2021, 13:40 pm</span>
+                <form action="" method="POST">
+                    <div class="post-input-container">
+                        <textarea rows="3" name="content"
+                            placeholder="What's on your mind, <%= dataUser.Profile.name  %>?"></textarea>
+                        <div class="add-post-links">
+                            <input type="file" name="imageUrl">
+                            <button type="submit">Submit</button>
                         </div>
                     </div>
-                    <a href="#"> <i class="fas fa-ellipsis-v"></i></a>
-                </div>
-
-               
-                <p class="post-text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-                <img src="../public/assets/images/feed-image-1.png" class="post-img">
-                <div class="post-row">
-                    <div class="activity-icons">
-                        <div><img src="../public/assets/images/like-blue.png">120</div>
-                        <div><img src="../public/assets/images/comments.png">45</div>
-                        <div><img src="../public/assets/images/share.png">20</div>
-
-                    </div>
-                    <div class="post-profile-icon">
-                        <img src="../public/assets/images/profile-pic.png"><i class="fa-solid fa-caret-down"></i>
-
-                    </div>
-                </div>
+                </form>
             </div>
+            <!-- kalau mau nambah post ininya di ikut diloop -->
+            <!-- loop dataPost -->
+            <% dataPost.forEach(x=> { %>
 
+                <div class="post-container">
+                    <div class="post-row">
+                        <div class="user-profile">
+                            <img src="<%= x.User.Profile.profilePicture  %>">
+                            <div>
+                                <p>
+                                    <%= x.User.Profile.name %>
+                                </p>
+                                <span>June 24 2021, 13:40 pm</span>
+                            </div>
+                        </div>
+                        <a href="#"> <i class="fas fa-ellipsis-v"></i></a>
+                    </div>
+
+
+                    <p class="post-text">
+                        <%= x.content %>
+                    </p>
+                    <img src="<%= x.imageURL %> " class="post-img">
+                    <div class="post-row">
+                        <div class="activity-icons">
+                            <div><img src="../public/assets/images/like-blue.png">
+                                <%= x.vote %>
+                            </div>
+                            <div><img src="../public/assets/images/comments.png">45</div>
+                            <div><img src="../public/assets/images/share.png">20</div>
+
+                        </div>
+                        <div class="post-profile-icon">
+                            <img src="<%= dataUser.Profile.profilePicture  %>"><i class="fa-solid fa-caret-down"></i>
+
+                        </div>
+                    </div>
+                </div>
+                <% }) %>
 
 
 
@@ -240,10 +252,11 @@
         </div>
     </div>
 
-<div class="footer">
-    <p>Copyright 2022 - SociallBook</p>
-</div>
+    <div class="footer">
+        <p>Copyright 2022 - SociallBook</p>
+    </div>
 
-<script src="../public/assets/script/2.js"></script>
+    <script src="../public/assets/script/2.js"></script>
 </body>
+
 </html>
