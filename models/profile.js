@@ -9,6 +9,14 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
+    genderTitle(){
+      if(this.gender === "Male"){
+        return `Mr. ${this.name}`
+      }else if(this.gender === "Female"){
+        return `Mrs. ${this.name}`
+      }
+    }
+
     static associate(models) {
       // define association here
       Profile.belongsTo(models.User)
@@ -37,7 +45,8 @@ module.exports = (sequelize, DataTypes) => {
         model: 'Users',
         key: 'id'
       },
-    }
+    },
+    gender: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Profile',

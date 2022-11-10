@@ -2,6 +2,13 @@ const express = require('express')
 const app = express()
 const router = require('./routers')
 var session = require('express-session')
+const multer = require("multer")
+const path = require("path")
+const diskStorage = multer.diskStorage({
+  destination: function (req, file, cb){
+    cb(null, path.join(__dirname, "./public/upload"))
+  }
+})
 const port = 3000
 
 app.set('view engine', 'ejs')

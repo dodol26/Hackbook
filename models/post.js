@@ -1,6 +1,6 @@
 'use strict';
 const {
-  Model
+  Model, Op
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Post extends Model {
@@ -27,12 +27,12 @@ module.exports = (sequelize, DataTypes) => {
       }
       if(searchByContent){
         option.where = {
-            content: {
-                [Op.iLike]: searchByContent
-            }
+          content: {
+            [Op.iLike]: searchByContent
+          }
         }
-    }
-
+      }
+      
       return Post.findAll(option)
     }
 
