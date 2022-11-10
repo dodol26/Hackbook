@@ -1,6 +1,6 @@
 const {User, Post, Profile} = require('../models')
 var bcrypt = require('bcryptjs')
-const e = require('express')
+const { Op } = require('sequelize')
 
 class Controller{
     static home(req, res){
@@ -8,17 +8,20 @@ class Controller{
     }
 
     static landingPage(req, res){
+        let {userId} = req.session
         let {searchByUser, searchByContent} = req.query
-        let option = {}
+        let option = {include: {
+            model: User
+        }}
+        let dataPost = {}
 
         if(searchByUser){
-            option.include = {
-                model: User,
-                include: {
-                    model: Profile,
-                    where: {name: {
+            option.include.include = {
+                model: Profile,
+                where: {
+                    name: {
                         [Op.iLike]: searchByUser
-                    }}
+                    }
                 }
             }
         }
@@ -32,7 +35,13 @@ class Controller{
         }
 
         Post.findAll(option)
-            .then(data => res.render('landingPage', {data}))
+            .then(data => {
+                dataPost = data
+                return User.findOne({where: {id: userId}})
+            })
+            .then(dataUser => {
+                res.render('landingPage', {dataPost, dataUser})
+            })
             .catch(err => res.send(err))
     }
 
