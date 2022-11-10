@@ -3,7 +3,7 @@ const {User, Post} = require('../models')
 class Controller{
     static home(req, res){
         Post.findAll()
-            .then(data => res.render('home', {data}))
+            .then(data => res.render('test', {data}))
             .catch(err => res.send(err))
     }
 
