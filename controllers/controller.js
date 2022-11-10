@@ -4,21 +4,32 @@ const { Op } = require('sequelize')
 
 class Controller {
     static home(req, res) {
-        res.render('home')
+        let { error } = req.query
+        let errors = error.split(',')
+        res.render('home', { errors })
     }
 
     static landingPage(req, res) {
         let { userId } = req.session
-        let { searchByUser, searchByContent } = req.query
+        let { searchByUser, searchByContent, edit, error } = req.query
+        let errors = error.split(',')
         let dataPost = {}
-
+        let dataEdit = {}
         Post.findAllPosts(searchByUser, searchByContent, User, Profile)
             .then(data => {
                 dataPost = data
+                if (edit) {
+                    return Post.findOne({ where: { id: edit } })
+                } else {
+                    return null
+                }
+            })
+            .then(data => {
+                dataEdit = data
                 return User.findLoggedUser(userId, Profile)
             })
             .then(dataUser => {
-                res.render('landingPage', { dataPost, dataUser })
+                res.render('landingPage', { dataPost, dataUser, dataEdit, errors })
             })
             .catch(err => res.send(err))
     }
@@ -58,8 +69,10 @@ class Controller {
     }
 
     static logout(req, res) {
-        delete req.session.userId
-        delete req.session.userRole
+        if (req.session.userId && req.session.userRole) {
+            delete req.session.userId
+            delete req.session.userRole
+        }
         res.redirect('/')
     }
 
@@ -113,6 +126,21 @@ class Controller {
 
         },
             { where: { id: PostId } })
+    }
+
+    static deletePost(req, res) {
+        let { userId } = req.session
+        let { PostId } = req.params
+        Post.findOne({ where: { id: PostId } })
+            .then(data => {
+                if (userId !== data.UserId) {
+                    res.redirect(`/home?error=Cannot delete other person post`)
+                } else {
+                    Post.destroy({ where: { id: PostId } })
+                }
+            })
+            .then(data => res.redirect('/home'))
+            .catch(err => res.send(err))
     }
 }
 
