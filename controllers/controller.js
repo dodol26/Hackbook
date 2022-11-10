@@ -15,16 +15,17 @@ class Controller {
 
     static landingPage(req, res) {
         let { userId, userRole } = req.session
-        let { searchByUser, searchByContent, error } = req.query
+        let { searchByContent, error } = req.query
         let errors = ''
         if (error) {
             errors = error.split(',')
         }
         let dataPost = {}
         let dataUser = {}
-        Post.findAllPosts(searchByUser, searchByContent, User, Profile)
+        Post.findAllPosts(searchByContent, User, Profile)
             .then(data => {
                 dataPost = data
+                console.log(dataPost)
                 return User.findLoggedUser(userId, Profile)
             })
             .then(data => {
@@ -149,10 +150,13 @@ class Controller {
         }
     }
     static editProfile(req, res) {
+        let profilePicture = '#'
+        if (req.file) {
+            profilePicture = req.file.path
+        }
         let { userId } = req.session
         let { UserId } = req.params
         let { name, dateOfBirth, aboutMe, gender } = req.body
-        let profilePicture = req.file.path
         if (userId != UserId) {
             return res.redirect(`/home?error=Cannot edit other person profile`)
         } else {
