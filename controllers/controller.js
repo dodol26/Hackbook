@@ -35,7 +35,7 @@ class Controller {
                 }
             })
             .then(dataAllUser => {
-                res.render('landingPage', { dataPost, dataUser, dataAllUser, errors })
+                return res.render('landingPage', { dataPost, dataUser, dataAllUser, errors })
             })
             .catch(err => res.send(err))
     }
@@ -47,12 +47,12 @@ class Controller {
                 return Profile.newProfile(data.id)
             })
             .then(data => {
-                res.redirect('/')
+                return res.redirect('/')
             })
             .catch(err => {
                 if (err.name == 'SequelizeValidationError' || err.name == 'SequelizeUniqueConstraintError') {
                     let errors = err.errors.map(el => el.message)
-                    res.redirect(`/?error=${errors}`)
+                    return res.redirect(`/?error=${errors}`)
                 } else {
                     res.send(err)
                 }
@@ -68,12 +68,12 @@ class Controller {
                     if (isValidPassword) {
                         req.session.userId = data.id
                         req.session.userRole = data.role
-                        res.redirect('/home')
+                        return res.redirect('/home')
                     } else {
-                        res.redirect('/?error=Invalid Email or Password')
+                        return res.redirect('/?error=Invalid Email or Password')
                     }
                 } else {
-                    res.redirect('/?error=Invalid Email or Password')
+                    return res.redirect('/?error=Invalid Email or Password')
                 }
             })
             .catch(err => res.send(err))
@@ -84,7 +84,7 @@ class Controller {
             delete req.session.userId
             delete req.session.userRole
         }
-        res.redirect('/')
+        return res.redirect('/')
     }
 
     static addPost(req, res) {
@@ -103,7 +103,7 @@ class Controller {
             .catch(err => {
                 if (err.name == 'SequelizeValidationError' || err.name == 'SequelizeUniqueConstraintError') {
                     let errors = err.errors.map(el => el.message)
-                    res.redirect(`/home?error=${errors}`)
+                    return res.redirect(`/home?error=${errors}`)
                 } else {
                     res.send(err)
                 }
@@ -142,15 +142,15 @@ class Controller {
         let { userId } = req.session
         let { UserId } = req.params
         let { error } = req.query
-        if (userId != UserId) {
-            return res.redirect(`/home?error=Cannot edit other person profile`)
-        } else {
-            Profile.findOne({ where: { id: UserId } })
-                .then(data => {
-                    res.render('editForm', { data, error })
-                })
-                .catch(err => res.send(err))
-        }
+        Profile.findOne({ where: { id: UserId } })
+            .then(data => {
+                if (data.UserId != userId) {
+                    return res.redirect(`/home?error=Cannot edit other person profile`)
+                } else {
+                    return res.render('editForm', { data, error })
+                }
+            })
+            .catch(err => res.send(err))
     }
     static editProfile(req, res) {
         let profilePicture = '#'
@@ -164,21 +164,24 @@ class Controller {
             }
         }
         let { name, dateOfBirth, aboutMe, gender } = req.body
-        if (userId != UserId) {
-            return res.redirect(`/home?error=Cannot edit other person profile`)
-        } else {
-            Profile.update({ name, dateOfBirth, aboutMe, gender, profilePicture },
-                { where: { id: UserId } })
-                .then(data => res.redirect('/home'))
-                .catch(err => {
-                    if (err.name == 'SequelizeValidationError' || err.name == 'SequelizeUniqueConstraintError') {
-                        let errors = err.errors.map(el => el.message)
-                        res.redirect(`/profile/edit/${UserId}?error=${errors}`)
-                    } else {
-                        res.send(err)
-                    }
-                })
-        }
+        Profile.findOne({ where: { id: UserId } })
+            .then(data => {
+                if (data.UserId != userId) {
+                    return res.redirect(`/home?error=Cannot edit other person profile`)
+                } else {
+                    return Profile.update({ name, dateOfBirth, aboutMe, gender, profilePicture },
+                        { where: { id: UserId } })
+                }
+            })
+            .then(data => res.redirect('/home'))
+            .catch(err => {
+                if (err.name == 'SequelizeValidationError' || err.name == 'SequelizeUniqueConstraintError') {
+                    let errors = err.errors.map(el => el.message)
+                    return res.redirect(`/profile/edit/${UserId}?error=${errors}`)
+                } else {
+                    res.send(err)
+                }
+            })
     }
 
     static deleteUser(req, res) {
