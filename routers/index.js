@@ -1,7 +1,7 @@
 const router = require('express').Router()
 const Controller = require('../controllers/controller')
 const multer = require("multer")
-const storage = multer.diskStorage({
+var storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, './public/upload')
     },
@@ -9,7 +9,18 @@ const storage = multer.diskStorage({
         cb(null, `${new Date().getTime()}-${file.originalname}`)
     }
 })
-const upload = multer({ storage })
+var upload = multer({
+    storage: storage,
+    fileFilter: function (req, file, cb) {
+        if (file.mimetype === 'image/png' || file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg') {
+            cb(null, true)
+        } else {
+            cb(null, false)
+            return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
+        }
+    },
+    limits: { fileSize: 1024 * 1024 * 5 },
+})
 
 router.get('/', Controller.home)
 
@@ -37,7 +48,7 @@ router.get('/home/upVote/:PostId', Controller.upVote)
 router.get('/home/downVote/:PostId', Controller.downVote)
 
 router.get('/home/delete/:PostId', Controller.deletePost)
-
+// router.get('/profile/:UserId', Controller.profile)
 router.get('/profile/edit/:UserId', Controller.editProfileForm)
 router.post('/profile/edit/:UserId', upload.single('profilePicture'), Controller.editProfile)
 

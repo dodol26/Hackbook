@@ -10,7 +10,7 @@ class Controller {
         if (error) {
             errors = error.split(',')
         }
-        res.render('home', { errors })
+        res.render('profilePage', { errors })
     }
 
     static landingPage(req, res) {
@@ -100,7 +100,7 @@ class Controller {
         Post.create({ content, imageURL, UserId: userId, vote: 0 })
             .then(data => res.redirect('/home'))
             .catch(err => {
-                if (err.name == 'SequelizeValidationError' || err.name == 'SequelizeUniqueConstraintError') {
+                if (err.name == 'SequelizeValidationError' || err.name == 'SequelizeUniqueConstraintError' || err == 'Error: Only .png, .jpg and .jpeg format allowed!') {
                     let errors = err.errors.map(el => el.message)
                     res.redirect(`/home?error=${errors}`)
                 } else {
@@ -176,6 +176,7 @@ class Controller {
                 })
         }
     }
+
 }
 
 module.exports = Controller
