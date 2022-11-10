@@ -138,21 +138,26 @@ class Controller {
     static editProfileForm(req, res) {
         let { userId } = req.session
         let { UserId } = req.params
+        let { error } = req.query
+        console.log(error);
         if (userId != UserId) {
             return res.redirect(`/home?error=Cannot edit other person profile`)
         } else {
             Profile.findOne({ where: { id: UserId } })
                 .then(data => {
-                    res.render('editForm', { data })
+                    res.render('editForm', { data, error })
                 })
                 .catch(err => res.send(err))
         }
     }
     static editProfile(req, res) {
+        let profilePicture = '#'
+        if (req.file) {
+            profilePicture = req.file.path
+        }
         let { userId } = req.session
         let { UserId } = req.params
         let { name, dateOfBirth, aboutMe, gender } = req.body
-        let profilePicture = req.file.path
         if (userId != UserId) {
             return res.redirect(`/home?error=Cannot edit other person profile`)
         } else {
