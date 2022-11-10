@@ -43,6 +43,20 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Post.belongsTo(models.User)
     }
+    get formattedDate() {
+      let date = new Date(this.createdAt)
+      let month = date.toLocaleString('default', { month: 'long' })
+      let day = date.getDate()
+      let year = date.getFullYear()
+      let hour = date.getHours()
+      let minute = date.getMinutes()
+      let ampm = hour >= 12 ? 'pm' : 'am'
+      hour = hour % 12
+      hour = hour ? hour : 12
+      minute = minute < 10 ? '0' + minute : minute
+      let strTime = hour + ':' + minute + ' ' + ampm
+      return `${month} ${day} ${year}, ${strTime}`
+    }
   }
   Post.init({
     content: {
