@@ -50,7 +50,7 @@ class Controller {
                 res.redirect('/')
             })
             .catch(err => {
-                if (err.name == 'SequelizeUniqueConstraintError') {
+                if (err.name == 'SequelizeValidationError') {
                     let errors = err.errors.map(el => el.message)
                     res.redirect(`/?error=${errors}`)
                 } else {
