@@ -31,7 +31,8 @@ class Controller {
             .then(data => {
                 dataUser = data
                 if (userRole == 'admin') {
-                    return User.findAll({ where: { role: 'user' } })
+                    return User.findAll({ where: { role: 'user' }, include: Profile })
+
                 } else {
                     return null
                 }
