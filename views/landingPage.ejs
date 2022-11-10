@@ -135,15 +135,15 @@
                     </div>
                 </div>
                 <!-- post input area -->
+                <form action=""method="POST">
                 <div class="post-input-container">
-                    <textarea rows="3" placeholder="What's on your mind,jhon?"></textarea>
+                    <textarea rows="3" name="content"placeholder="What's on your mind,jhon?"></textarea>
                     <div class="add-post-links">
-                        <a href="#"><img src="../public/assets/images/live-video.png"> Live Video</a>
-                        <a href="#"><img src="../public/assets/images/photo.png"> Photo/Video</a>
-                        <a href="#"><img src="../public/assets/images/feeling.png"> Feeling/Activity</a>
+                       <input type="file" name="imageUrl">
+                       <button type="submit">Submit</button>
                     </div>
                 </div>
-
+            </form>
             </div>
                         <!-- kalau mau nambah post ininya di ikut diloop -->
             <div class="post-container">
