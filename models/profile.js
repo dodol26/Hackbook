@@ -15,10 +15,15 @@ module.exports = (sequelize, DataTypes) => {
       let profilePicture = 'https://www.pngfind.com/pngs/m/676-6764065_default-profile-picture-transparent-hd-png-download.png'
       let aboutMe = ''
       let gender = undefined
-      return Profile.create({ name, dateOfBirth, profilePicture, aboutMe, gender, UserId })
+      return { name, dateOfBirth, profilePicture, aboutMe, gender, UserId }
     }
 
-    genderTitle() {
+    static newProfile(UserId) {
+      let data = new Profile().newUser(UserId)
+      return Profile.create(data)
+    }
+
+    get genderTitle() {
       if (this.gender === "Male") {
         return `Mr. ${this.name}`
       } else if (this.gender === "Female") {

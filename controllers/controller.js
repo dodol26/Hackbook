@@ -5,7 +5,7 @@ const { Op } = require('sequelize')
 class Controller {
     static home(req, res) {
         let { error } = req.query
-        let errors
+        let errors = ''
         if (error) {
             errors = error.split(',')
         }
@@ -13,29 +13,29 @@ class Controller {
     }
 
     static landingPage(req, res) {
-        let { userId } = req.session
-        let { searchByUser, searchByContent, edit, error } = req.query
-        let errors
+        let { userId, userRole } = req.session
+        let { searchByUser, searchByContent, error } = req.query
+        let errors = ''
         if (error) {
             errors = error.split(',')
         }
         let dataPost = {}
-        let dataEdit = {}
+        let dataUser = {}
         Post.findAllPosts(searchByUser, searchByContent, User, Profile)
             .then(data => {
                 dataPost = data
-                if (edit) {
-                    return Post.findOne({ where: { id: edit } })
+                return User.findLoggedUser(userId, Profile)
+            })
+            .then(data => {
+                dataUser = data
+                if (userRole === 'admin') {
+                    return User.findAll({ where: { role: 'user' } })
                 } else {
                     return null
                 }
             })
-            .then(data => {
-                dataEdit = data
-                return User.findLoggedUser(userId, Profile)
-            })
-            .then(dataUser => {
-                res.render('landingPage', { dataPost, dataUser, dataEdit, errors })
+            .then(dataAllUser => {
+                res.render('landingPage', { dataPost, dataUser, dataAllUser, errors })
             })
             .catch(err => res.send(err))
     }
@@ -44,10 +44,9 @@ class Controller {
         let { email, password } = req.body
         User.create({ email, password })
             .then(data => {
-                return Profile.this.newUser(data.id)
+                return Profile.newProfile(data.id)
             })
             .then(data => {
-                console.log(data)
                 res.redirect('/')
             })
             .catch(err => {
@@ -117,38 +116,15 @@ class Controller {
             .catch(err => res.send(err))
     }
 
-    static editForm(req, res) {
-        let { userId } = req.session
-        let { PostId } = req.params
-        Post.findOne({ where: { id: PostId } })
-            .then(data => {
-                if (userId !== data.UserId) {
-                    res.redirect(`/home?error=Cannot edit other person post`)
-                } else {
-                    res.render('editPost', { data })
-                }
-            })
-            .catch(err => res.send(err))
-    }
-    static editPost(req, res) {
-        let { userId } = req.session
-        let { PostId } = req.params
-
-        Post.update({
-
-        },
-            { where: { id: PostId } })
-    }
-
     static deletePost(req, res) {
         let { userId } = req.session
         let { PostId } = req.params
         Post.findOne({ where: { id: PostId } })
             .then(data => {
                 if (userId !== data.UserId) {
-                    res.redirect(`/home?error=Cannot delete other person post`)
+                    return res.redirect(`/home?error=Cannot delete other person post`)
                 } else {
-                    Post.destroy({ where: { id: PostId } })
+                    return Post.destroy({ where: { id: PostId } })
                 }
             })
             .then(data => res.redirect('/home'))

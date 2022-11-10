@@ -2,7 +2,7 @@
 const {
   Model
 } = require('sequelize');
-const {hashingPassword} = require('../helpers')
+const { hashingPassword } = require('../helpers')
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
@@ -11,9 +11,9 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static findLoggedUser(id, Profile){
+    static findLoggedUser(id, Profile) {
       return User.findOne({
-        where: {id},
+        where: { id },
         include: Profile
       })
     }
@@ -54,7 +54,7 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     },
-    role: DataTypes.BOOLEAN
+    role: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'User',
@@ -63,7 +63,7 @@ module.exports = (sequelize, DataTypes) => {
   User.beforeCreate((user) => {
     var hash = hashingPassword(user.password)
     user.password = hash
-    user.role = false
+    user.role = 'user'
   })
 
   return User;

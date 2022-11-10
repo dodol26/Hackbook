@@ -1,26 +1,22 @@
 [
     {
-
         "email": "fian@gmail.com",
         "password": "123456",
-        "role": true
+        "role": "admin"
     },
     {
-
         "email": "user1@gmail.com",
         "password": "123456",
-        "role": false
+        "role": "user"
     },
     {
-
         "email": "user2@gmail.com",
         "password": "123456",
-        "role": false
+        "role": "user"
     },
     {
-
         "email": "tonni@gmail.com",
         "password": "rahasia",
-        "role": true
+        "role": "admin"
     }
 ]
