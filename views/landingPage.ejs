@@ -175,11 +175,14 @@
                     <img src="<%= x.imageURL %> " class="post-img">
                     <div class="post-row">
                         <div class="activity-icons">
-                            <div><img src="../public/assets/images/like-blue.png">
+                            <div><a href="/home/upVote/<%=x.id %>"><img src="../public/assets/images/like-blue.png"></a>
                                 <%= x.vote %>
                             </div>
-                            <div><img src="../public/assets/images/comments.png">45</div>
-                            <div><img src="../public/assets/images/share.png">20</div>
+                            <div><a href="/home/downVote/<%=x.id %>"><img
+                                        src="../public/assets/images/oie_108140w1CmWo5J.png"></a>
+                                <%= x.vote %>
+                            </div>
+
 
                         </div>
                         <div class="post-profile-icon">
