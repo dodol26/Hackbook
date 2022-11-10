@@ -135,7 +135,9 @@
                         <p>
                             <%= dataUser.Profile.name %>
                         </p>
-                        <small>Public <i class="fa-solid fa-caret-down"></i></small>
+                        <small>
+                            <%= dataUser.role %> <i class="fa-solid fa-caret-down"></i>
+                        </small>
                         <% if(errors) {%>
                             <small style="color: red;">
                                 <%= errors %>
@@ -299,7 +301,7 @@
 
             </div>
             <% if(dataUser.role=='admin' ){ %>
-                <h4>All User</h4>
+                <h4 id="all-user">All User</h4>
                 <% dataAllUser.forEach(x=>{ %>
                     <div class="online-list">
                         <div class="online">
@@ -308,7 +310,7 @@
                         <p>
                             <%= x.Profile.name %>
                         </p>
-                        <div><a style="margin-right: 10px;" href="/user/delete/<%=x.id %>"><i
+                        <div class="new-profile"><a style="margin-right: 10px;" href="/user/delete/<%=x.id %>"><i
                                     class="fa-solid fa-trash"></i></a>
 
                         </div>
