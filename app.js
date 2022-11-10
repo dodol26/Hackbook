@@ -2,26 +2,19 @@ const express = require('express')
 const app = express()
 const router = require('./routers')
 var session = require('express-session')
-const multer = require("multer")
-const path = require("path")
-const diskStorage = multer.diskStorage({
-  destination: function (req, file, cb){
-    cb(null, path.join(__dirname, "./public/upload"))
-  }
-})
 const port = 3000
 
 app.set('view engine', 'ejs')
-app.use(express.urlencoded({extended:true}))
+app.use(express.urlencoded({ extended: true }))
 app.use('/public', express.static('public'))
 
 app.use(session({
   secret: 'keyboard cat',
   resave: false,
   saveUninitialized: false,
-  cookie: { 
+  cookie: {
     secure: false,
-    sameSite: true 
+    sameSite: true
   },
 }))
 

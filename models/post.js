@@ -9,14 +9,17 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static findAllPosts(searchByUser, searchByContent, User, Profile){
-      let option = {include: {
-        model: User,
+    static findAllPosts(searchByUser, searchByContent, User, Profile) {
+      let option = {
         include: {
-          model: Profile
-        }
-      }}
-      if(searchByUser){
+          model: User,
+          include: {
+            model: Profile
+          }
+        },
+        order: [['createdAt', 'desc']]
+      }
+      if (searchByUser) {
         option.include.include = {
           where: {
             name: {
@@ -25,14 +28,14 @@ module.exports = (sequelize, DataTypes) => {
           }
         }
       }
-      if(searchByContent){
+      if (searchByContent) {
         option.where = {
           content: {
             [Op.iLike]: searchByContent
           }
         }
       }
-      
+
       return Post.findAll(option)
     }
 

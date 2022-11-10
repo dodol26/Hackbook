@@ -65,7 +65,8 @@ class Controller {
 
     static addPost(req, res) {
         let { userId } = req.session
-        let { content, imageURL } = req.body
+        let { content } = req.body
+        let imageURL = req.file.path
         Post.create({ content, imageURL, UserId: userId, vote: 0 })
             .then(data => res.redirect('/home'))
             .catch(err => {
