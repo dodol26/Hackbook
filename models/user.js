@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    findLoggedUser(id, Profile){
+    static findLoggedUser(id, Profile){
       return User.findOne({
         where: {id},
         include: Profile
