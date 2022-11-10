@@ -291,28 +291,25 @@
             </div>
             <img src="../public/assets/images/advertisement.png" class="sidebar-ads">
             <div class="sidebar-title">
-                <h4>Conversation</h4>
-                <a href="#">Hide Chat</a>
-            </div>
 
-            <div class="online-list">
-                <div class="online">
-                    <img src="../public/assets/images/member-1.png">
-                </div>
-                <p>Alison Mina</p>
             </div>
-            <div class="online-list">
-                <div class="online">
-                    <img src="../public/assets/images/member-2.png">
-                </div>
-                <p>Jackson</p>
-            </div>
-            <div class="online-list">
-                <div class="online">
-                    <img src="../public/assets/images/member-3.png">
-                </div>
-                <p>Samona</p>
-            </div>
+            <% if(dataUser.role=='admin' ){ %>
+                <h4>All User</h4>
+                <% dataAllUser.forEach(x=>{ %>
+                    <div class="online-list">
+                        <div class="online">
+                            <img src="<%= x.Profile.profilePicture %>">
+                        </div>
+                        <p>
+                            <%= x.Profile.name %>
+                        </p>
+                        <div><a href="/home/user/delete/<%=x.id %>"><i class="fa-solid fa-trash"></i></a>
+
+                        </div>
+
+                    </div>
+                    <% }) %>
+                        <%}%>
         </div>
     </div>
 
