@@ -3,9 +3,11 @@ const Controller = require('../controllers/controller')
 
 router.get('/', Controller.home)
 
-// router.post('/register', Controller.register)
+router.post('/register', Controller.register)
 
-// router.post('/login', Controller.login)
+router.post('/login', Controller.login)
+
+router.get('/logout', Controller.logout)
 
 router.use((req, res, next) => {
     if(req.session.userId){
@@ -15,6 +17,8 @@ router.use((req, res, next) => {
         res.redirect('/?error=Please Login first')
     }
 })
+
+router.use('/home', Controller.landingPage)
 
 // router.post('/', Controller.addPost)
 
