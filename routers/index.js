@@ -32,9 +32,13 @@ router.get('/home', Controller.landingPage)
 
 router.post('/home/addPost', upload.single('imageURL'), Controller.addPost)
 
+
 router.get('/home/upVote/:PostId', Controller.upVote)
 router.get('/home/downVote/:PostId', Controller.downVote)
 
 router.get('/home/delete/:PostId', Controller.deletePost)
+
+router.get('/profile/edit/:UserId', Controller.editProfileForm)
+router.post('/profile/edit/:UserId', Controller.editProfile)
 
 module.exports = router
