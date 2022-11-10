@@ -1,5 +1,5 @@
 const {User, Post, Profile} = require('../models')
-var bcrypt = require('bcryptjs')
+const {hashingPassword, comparingPassword} = require('../helpers')
 const { Op } = require('sequelize')
 
 class Controller{
@@ -10,38 +10,15 @@ class Controller{
     static landingPage(req, res){
         let {userId} = req.session
         let {searchByUser, searchByContent} = req.query
-        let option = {include: {
-            model: User,
-            include: {
-                model: Profile
-            }
-        }}
         let dataPost = {}
 
-        if(searchByUser){
-            option.include.include = {
-                where: {
-                    name: {
-                        [Op.iLike]: searchByUser
-                    }
-                }
-            }
-        }
-
-        if(searchByContent){
-            option.where = {
-                content: {
-                    [Op.iLike]: searchByContent
-                }
-            }
-        }
-
-        Post.findAll(option)
+        Post.findAllPosts(searchByUser, searchByContent, User, Profile)
             .then(data => {
                 dataPost = data
-                return User.findOne({where: {id: userId}})
+                return User.findLoggedUser(userId, Profile)
             })
             .then(dataUser => {
+                console.log(dataPost)
                 res.render('landingPage', {dataPost, dataUser})
             })
             .catch(err => res.send(err))
@@ -66,7 +43,7 @@ class Controller{
         User.findOne({where: {email}})
             .then(data => {
                 if(data){
-                    let isValidPassword = bcrypt.compareSync(password, data.password)
+                    let isValidPassword = comparingPassword(password, data.password)
                     if(isValidPassword){
                         req.session.userId = data.id
                         req.session.userRole = data.role

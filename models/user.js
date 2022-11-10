@@ -2,7 +2,7 @@
 const {
   Model
 } = require('sequelize');
-var bcrypt = require('bcryptjs')
+const {hashingPassword} = require('../helpers')
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
@@ -11,6 +11,13 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
+    findLoggedUser(id, Profile){
+      return User.findOne({
+        where: {id},
+        include: Profile
+      })
+    }
+
     static associate(models) {
       // define association here
       User.hasOne(models.Profile)
@@ -54,8 +61,7 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   User.beforeCreate((user) => {
-    var salt = bcrypt.genSaltSync(10)
-    var hash = bcrypt.hashSync(user.password, salt)
+    var hash = hashingPassword(user.password)
     user.password = hash
     user.role = false
   })
