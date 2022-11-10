@@ -1,4 +1,4 @@
-const {User, Post} = require('../models')
+const {User, Post, Profile} = require('../models')
 var bcrypt = require('bcryptjs')
 const e = require('express')
 
@@ -8,7 +8,30 @@ class Controller{
     }
 
     static landingPage(req, res){
-        Post.findAll()
+        let {searchByUser, searchByContent} = req.query
+        let option = {}
+
+        if(searchByUser){
+            option.include = {
+                model: User,
+                include: {
+                    model: Profile,
+                    where: {name: {
+                        [Op.iLike]: searchByUser
+                    }}
+                }
+            }
+        }
+
+        if(searchByContent){
+            option.where = {
+                content: {
+                    [Op.iLike]: searchByContent
+                }
+            }
+        }
+
+        Post.findAll(option)
             .then(data => res.render('landingPage', {data}))
             .catch(err => res.send(err))
     }
