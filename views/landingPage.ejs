@@ -153,7 +153,7 @@
             <!-- loop dataPost -->
             <% dataPost.forEach(x=> { %>
                 <!-- make if statement x.UserId == dataUser.id   -->
-                <% if(x.UserId==dataUser.id) { %>
+                <% if(x.UserId==dataUser.id || dataUser.role=='admin' ) { %>
                     <div class="post-container">
                         <div class="post-row">
                             <div class="user-profile">
@@ -174,28 +174,30 @@
                         <p class="post-text">
                             <%= x.content %>
                         </p>
-                        <img src="<%= x.imageURL %> " class="post-img">
-                        <div class="post-row">
-                            <div class="activity-icons">
-                                <div><a href="/home/upVote/<%=x.id %>"><img
-                                            src="../public/assets/images/like-blue.png"></a>
-                                    <%= x.vote %>
+                        <% if(x.imageURL !='#' ){ %>
+                            <img src="<%= x.imageURL %> " class="post-img">
+                            <% } %>
+                                <div class="post-row">
+                                    <div class="activity-icons">
+                                        <div><a href="/home/upVote/<%=x.id %>"><img
+                                                    src="../public/assets/images/like-blue.png"></a>
+                                            <%= x.vote %>
+                                        </div>
+                                        <div><a href="/home/downVote/<%=x.id %>"><img
+                                                    src="../public/assets/images/oie_108140w1CmWo5J.png"></a>
+
+                                        </div>
+                                        <div><a href="/home/delete/<%=x.id %>"><i class="fa-solid fa-trash"></i></a>
+
+                                        </div>
+
+                                    </div>
+                                    <div class="post-profile-icon">
+                                        <img src="<%= dataUser.Profile.profilePicture  %>"><i
+                                            class="fa-solid fa-caret-down"></i>
+
+                                    </div>
                                 </div>
-                                <div><a href="/home/downVote/<%=x.id %>"><img
-                                            src="../public/assets/images/oie_108140w1CmWo5J.png"></a>
-
-                                </div>
-                                <div><a href="/home/delete/<%=x.id %>"><i class="fa-solid fa-trash"></i></a>
-
-                                </div>
-
-                            </div>
-                            <div class="post-profile-icon">
-                                <img src="<%= dataUser.Profile.profilePicture  %>"><i
-                                    class="fa-solid fa-caret-down"></i>
-
-                            </div>
-                        </div>
                     </div>
                     <% }else { %>
                         <div class="post-container">
@@ -217,26 +219,28 @@
                             <p class="post-text">
                                 <%= x.content %>
                             </p>
-                            <img src="<%= x.imageURL %> " class="post-img">
-                            <div class="post-row">
-                                <div class="activity-icons">
-                                    <div><a href="/home/upVote/<%=x.id %>"><img
-                                                src="../public/assets/images/like-blue.png"></a>
-                                        <%= x.vote %>
+                            <% if(x.imageURL !='#' ){ %>
+                                <img src="<%= x.imageURL %> " class="post-img">
+                                <% } %>
+                                    <div class="post-row">
+                                        <div class="activity-icons">
+                                            <div><a href="/home/upVote/<%=x.id %>"><img
+                                                        src="../public/assets/images/like-blue.png"></a>
+                                                <%= x.vote %>
+                                            </div>
+                                            <div><a href="/home/downVote/<%=x.id %>"><img
+                                                        src="../public/assets/images/oie_108140w1CmWo5J.png"></a>
+
+                                            </div>
+
+
+                                        </div>
+                                        <div class="post-profile-icon">
+                                            <img src="<%= dataUser.Profile.profilePicture  %>"><i
+                                                class="fa-solid fa-caret-down"></i>
+
+                                        </div>
                                     </div>
-                                    <div><a href="/home/downVote/<%=x.id %>"><img
-                                                src="../public/assets/images/oie_108140w1CmWo5J.png"></a>
-
-                                    </div>
-
-
-                                </div>
-                                <div class="post-profile-icon">
-                                    <img src="<%= dataUser.Profile.profilePicture  %>"><i
-                                        class="fa-solid fa-caret-down"></i>
-
-                                </div>
-                            </div>
                         </div>
                         <%}%>
 
