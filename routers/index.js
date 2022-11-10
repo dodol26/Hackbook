@@ -48,7 +48,7 @@ router.get('/home/upVote/:PostId', Controller.upVote)
 router.get('/home/downVote/:PostId', Controller.downVote)
 
 router.get('/home/delete/:PostId', Controller.deletePost)
-
+// router.get('/profile/:UserId', Controller.profile)
 router.get('/profile/edit/:UserId', Controller.editProfileForm)
 router.post('/profile/edit/:UserId', upload.single('profilePicture'), Controller.editProfile)
 

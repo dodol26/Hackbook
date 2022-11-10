@@ -10,7 +10,7 @@ class Controller {
         if (error) {
             errors = error.split(',')
         }
-        res.render('home', { errors })
+        res.render('profilePage', { errors })
     }
 
     static landingPage(req, res) {
@@ -176,6 +176,7 @@ class Controller {
                 })
         }
     }
+
 }
 
 module.exports = Controller
