@@ -9,18 +9,29 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    genderTitle(){
-      if(this.gender === "Male"){
+    newUser(UserId) {
+      let name = `user${new Date().getTime()}`
+      let dateOfBirth = new Date()
+      let profilePicture = 'https://www.pngfind.com/pngs/m/676-6764065_default-profile-picture-transparent-hd-png-download.png'
+      let aboutMe = ''
+      let gender = undefined
+      return Profile.create({ name, dateOfBirth, profilePicture, aboutMe, gender, UserId })
+    }
+
+    genderTitle() {
+      if (this.gender === "Male") {
         return `Mr. ${this.name}`
-      }else if(this.gender === "Female"){
+      } else if (this.gender === "Female") {
         return `Mrs. ${this.name}`
+      } else {
+        return `${this.name}`
       }
     }
 
     static associate(models) {
       // define association here
       Profile.belongsTo(models.User)
-      
+
     }
   }
   Profile.init({

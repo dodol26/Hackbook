@@ -5,14 +5,20 @@ const { Op } = require('sequelize')
 class Controller {
     static home(req, res) {
         let { error } = req.query
-        let errors = error.split(',')
+        let errors
+        if (error) {
+            errors = error.split(',')
+        }
         res.render('home', { errors })
     }
 
     static landingPage(req, res) {
         let { userId } = req.session
         let { searchByUser, searchByContent, edit, error } = req.query
-        let errors = error.split(',')
+        let errors
+        if (error) {
+            errors = error.split(',')
+        }
         let dataPost = {}
         let dataEdit = {}
         Post.findAllPosts(searchByUser, searchByContent, User, Profile)
@@ -37,7 +43,13 @@ class Controller {
     static register(req, res) {
         let { email, password } = req.body
         User.create({ email, password })
-            .then(data => res.redirect('/'))
+            .then(data => {
+                return Profile.this.newUser(data.id)
+            })
+            .then(data => {
+                console.log(data)
+                res.redirect('/')
+            })
             .catch(err => {
                 if (err.name === 'SequelizeUniqueConstraintError') {
                     let errors = err.errors.map(el => el.message)
