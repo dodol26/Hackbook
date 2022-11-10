@@ -78,6 +78,42 @@ class Controller {
                 }
             })
     }
+
+    static upVote(req, res) {
+        let { PostId } = req.params
+        Post.increment('vote', { by: 1, where: { id: PostId } })
+            .then(data => res.redirect('/home'))
+            .catch(err => res.send(err))
+    }
+    static downVote(req, res) {
+        let { PostId } = req.params
+        Post.decrement('vote', { by: 1, where: { id: PostId } })
+            .then(data => res.redirect('/home'))
+            .catch(err => res.send(err))
+    }
+
+    static editForm(req, res) {
+        let { userId } = req.session
+        let { PostId } = req.params
+        Post.findOne({ where: { id: PostId } })
+            .then(data => {
+                if (userId !== data.UserId) {
+                    res.redirect(`/home?error=Cannot edit other person post`)
+                } else {
+                    res.render('editPost', { data })
+                }
+            })
+            .catch(err => res.send(err))
+    }
+    static editPost(req, res) {
+        let { userId } = req.session
+        let { PostId } = req.params
+
+        Post.update({
+
+        },
+            { where: { id: PostId } })
+    }
 }
 
 module.exports = Controller

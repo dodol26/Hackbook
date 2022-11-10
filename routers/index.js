@@ -32,4 +32,10 @@ router.get('/home', Controller.landingPage)
 
 router.post('/home/addPost', upload.single('imageURL'), Controller.addPost)
 
+router.get('/home/upVote/:PostId', Controller.upVote)
+router.get('/home/downVote/:PostId', Controller.downVote)
+
+router.get('home/edit/:PostId', Controller.editForm)
+router.post('/home/edit/:PostId', Controller.editPost)
+
 module.exports = router
