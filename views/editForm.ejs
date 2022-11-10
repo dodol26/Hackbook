@@ -12,18 +12,21 @@
 <body>
 
     <div class="container">
-
         <div class="forms-container">
             <div class="signin-signup">
 
                 <form action="/login" class="sign-in-form" method="post">
 
                     <h2 class="title">Edit Profile</h2>
+                    <!-- loop data foreach -->
+
+
 
                     <div class="input-field">
 
+
                         <i class="fa-solid fa-user"></i>
-                        <input type="name" value="" name="email" autocomplete="off" />
+                        <input type="name" value="" name="name" placeholder="<%= data.name %> " autocomplete="off" />
                     </div>
                     <div class="input-field">
                         <i class="fa-solid fa-calendar-days"></i>
@@ -36,6 +39,7 @@
                     </div>
 
                     <select name="gender" id="gender" class="input-field">
+
                         <!-- select gender male or female -->
                         <option value="Male">Male</option>
                         <option value="Female">Female</option>
@@ -49,33 +53,8 @@
                     <input type="submit" value="sumbit" class="btn solid" />
 
                 </form>
-                <form action="/register" class="sign-up-form" method="post">
-                    <h2 class="title">Sign up</h2>
-                    <div class="input-field">
-                        <i class="fas fa-envelope"></i>
-                        <input type="email" placeholder="Email" name="email" />
-                    </div>
-                    <div class="input-field">
-                        <i class="fas fa-lock"></i>
-                        <input type="password" placeholder="Password" name="password" />
-                    </div>
-                    <input type="submit" class="btn" value="Sign up" />
-                    <p class="social-text">Or Sign up with social platforms</p>
-                    <div class="social-media">
-                        <a href="#" class="social-icon">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="#" class="social-icon">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="#" class="social-icon">
-                            <i class="fab fa-google"></i>
-                        </a>
-                        <a href="#" class="social-icon">
-                            <i class="fab fa-linkedin-in"></i>
-                        </a>
-                    </div>
-                </form>
+
+
             </div>
         </div>
 
