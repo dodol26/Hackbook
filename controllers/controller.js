@@ -1,6 +1,7 @@
 const { User, Post, Profile } = require('../models')
 const { comparingPassword } = require('../helpers')
 const { Op } = require('sequelize')
+const multer = require('multer')
 
 class Controller {
     static home(req, res) {
@@ -50,7 +51,7 @@ class Controller {
                 res.redirect('/')
             })
             .catch(err => {
-                if (err.name == 'SequelizeValidationError') {
+                if (err.name == 'SequelizeValidationError' || err.name == 'SequelizeUniqueConstraintError') {
                     let errors = err.errors.map(el => el.message)
                     res.redirect(`/?error=${errors}`)
                 } else {
@@ -88,13 +89,16 @@ class Controller {
     }
 
     static addPost(req, res) {
+        let imageURL = '#'
+        if (req.file) {
+            imageURL = req.file.path
+        }
         let { userId } = req.session
         let { content } = req.body
-        let imageURL = req.file.path
         Post.create({ content, imageURL, UserId: userId, vote: 0 })
             .then(data => res.redirect('/home'))
             .catch(err => {
-                if (err.name == 'SequelizeUniqueConstraintError') {
+                if (err.name == 'SequelizeValidationError' || err.name == 'SequelizeUniqueConstraintError') {
                     let errors = err.errors.map(el => el.message)
                     res.redirect(`/home?error=${errors}`)
                 } else {
@@ -156,7 +160,7 @@ class Controller {
                 { where: { id: UserId } })
                 .then(data => res.redirect('/home'))
                 .catch(err => {
-                    if (err.name == 'SequelizeUniqueConstraintError') {
+                    if (err.name == 'SequelizeValidationError' || err.name == 'SequelizeUniqueConstraintError') {
                         let errors = err.errors.map(el => el.message)
                         res.redirect(`/profile/edit/${UserId}?error=${errors}`)
                     } else {
