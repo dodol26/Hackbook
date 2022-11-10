@@ -18,7 +18,6 @@ class Controller{
                 return User.findLoggedUser(userId, Profile)
             })
             .then(dataUser => {
-                console.log(dataPost)
                 res.render('landingPage', {dataPost, dataUser})
             })
             .catch(err => res.send(err))
@@ -65,7 +64,18 @@ class Controller{
     }
 
     static addPost(req, res){
-        let {title, content, imageURL} = req.body
+        let {userId} = req.session
+        let {content, imageURL} = req.body
+        Post.create({content, imageURL, UserId: userId, vote: 0})
+            .then(data => res.redirect('/home'))
+            .catch(err => {
+                if(err.name === 'SequelizeUniqueConstraintError'){
+                    let errors = err.errors.map(el => el.message)
+                    res.redirect(`/home?error=${errors}`)
+                }else{
+                    res.send(err)
+                }
+            })
     }
 }
 
