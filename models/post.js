@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static findAllPosts(searchByUser, searchByContent, User, Profile) {
+    static findAllPosts(searchByContent, User, Profile) {
       let option = {
         include: {
           model: User,
@@ -19,21 +19,8 @@ module.exports = (sequelize, DataTypes) => {
         },
         order: [['createdAt', 'desc']]
       }
-      if (searchByUser) {
-        option.include.include = {
-          where: {
-            name: {
-              [Op.iLike]: searchByUser
-            }
-          }
-        }
-      }
       if (searchByContent) {
-        option.where = {
-          content: {
-            [Op.iLike]: searchByContent
-          }
-        }
+        option.where = { content: { [Op.iLike]: `%${searchByContent}%` } }
       }
 
       return Post.findAll(option)

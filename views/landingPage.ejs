@@ -21,10 +21,12 @@
             </ul>
         </div>
         <div class="nav-right">
-            <div class="search-box">
-                <img src="../public/assets/images/search.png">
-                <input type="text" placeholder="Search">
-            </div>
+            <form action="/home" method="get">
+                <div class="search-box">
+                    <img src="../public/assets/images/search.png">
+                    <input type="search" placeholder="Search By Content" name="searchByContent">
+                </div>
+            </form>
             <!-- user login icon nav -->
             <div class="nav-user-icon online" onclick="settingsMenuToggle()">
                 <img src="<%= dataUser.Profile.profilePicture  %>" alt="">
@@ -147,7 +149,7 @@
                     <div class="post-input-container">
 
                         <textarea rows="3" name="content"
-                            placeholder="What's on your mind, <%= dataUser.Profile.name  %>?"></textarea>
+                            placeholder="What's on your mind, <%= dataUser.Profile.genderTitle  %>?"></textarea>
                         <div class="add-post-links">
                             <input type="file" name="imageURL">
                             <button type="submit">Submit</button>

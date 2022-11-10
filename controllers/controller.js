@@ -15,16 +15,17 @@ class Controller {
 
     static landingPage(req, res) {
         let { userId, userRole } = req.session
-        let { searchByUser, searchByContent, error } = req.query
+        let { searchByContent, error } = req.query
         let errors = ''
         if (error) {
             errors = error.split(',')
         }
         let dataPost = {}
         let dataUser = {}
-        Post.findAllPosts(searchByUser, searchByContent, User, Profile)
+        Post.findAllPosts(searchByContent, User, Profile)
             .then(data => {
                 dataPost = data
+                console.log(dataPost)
                 return User.findLoggedUser(userId, Profile)
             })
             .then(data => {
