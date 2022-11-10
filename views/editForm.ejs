@@ -13,37 +13,42 @@
 <body>
     <div class="container">
         <h1>Edit Profile</h1>
-        <form action="/profile/edit/<%= data.id %>" method="post" enctype="multipart/form-data">
-            <div class="mb-3">
-                <label for="name" class="form-label">Name</label>
-                <input type="text" class="form-control" id="name" name="name" value="<%= data.name %>">
-            </div>
-            <div class="mb-3">
-                <label for="dateOfBirth" class="form-label">Date Of Birth</label>
-                <input type="date" class="form-control" id="dateOfBirth" name="dateOfBirth"
-                    value="<%= data.dateFormat %>">
-            </div>
-            <div class="mb-3">
-                <label for="aboutMe" class="form-label">About Me</label>
-                <textarea class="form-control" id="aboutMe" name="aboutMe"><%= data.aboutMe %></textarea>
-            </div>
-            <div class="mb-3">
-                <label for="gender" class="form-label">Gender</label>
-                <select class="form-select" id="gender" name="gender">
-                    <% ['Male', 'Female' ].forEach(el=> { %>
-                        <option value="<%= el %>" <%=el==data.gender ? 'selected' : '' %>><%= el %>
-                        </option>
-                        <% }) %>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="profilePicture" class="form-label">Profile Picture</label>
-                <input type="file" class="form-control" id="profilePicture" name="profilePicture"
-                    value="<%= data.profilePicture %>">
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-            <a href="/home" class="btn btn-danger">Cancel</a>
-        </form>
+        <% if(error) {%>
+            <h3 style="color: red;">
+                <%= error%>
+            </h3>
+            <% } %>
+                <form action="/profile/edit/<%= data.id %>" method="post" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="name" name="name" value="<%= data.name %>">
+                    </div>
+                    <div class="mb-3">
+                        <label for="dateOfBirth" class="form-label">Date Of Birth</label>
+                        <input type="date" class="form-control" id="dateOfBirth" name="dateOfBirth"
+                            value="<%= data.dateFormat %>">
+                    </div>
+                    <div class="mb-3">
+                        <label for="aboutMe" class="form-label">About Me</label>
+                        <textarea class="form-control" id="aboutMe" name="aboutMe"><%= data.aboutMe %></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="gender" class="form-label">Gender</label>
+                        <select class="form-select" id="gender" name="gender">
+                            <% ['Male', 'Female' ].forEach(el=> { %>
+                                <option value="<%= el %>" <%=el==data.gender ? 'selected' : '' %>><%= el %>
+                                </option>
+                                <% }) %>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="profilePicture" class="form-label">Profile Picture</label>
+                        <input type="file" class="form-control" id="profilePicture" name="profilePicture"
+                            value="<%= data.profilePicture %>">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <a href="/home" class="btn btn-danger">Cancel</a>
+                </form>
     </div>
 </body>
 

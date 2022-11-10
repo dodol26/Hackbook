@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       let name = `user${new Date().getTime()}`
       let dateOfBirth = new Date()
       let profilePicture = 'https://www.pngfind.com/pngs/m/676-6764065_default-profile-picture-transparent-hd-png-download.png'
-      let aboutMe = ''
+      let aboutMe = "Im a Dragon!!"
       let gender = undefined
       return { name, dateOfBirth, profilePicture, aboutMe, gender, UserId }
     }

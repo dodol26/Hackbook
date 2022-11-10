@@ -135,11 +135,17 @@
                             <%= dataUser.Profile.name %>
                         </p>
                         <small>Public <i class="fa-solid fa-caret-down"></i></small>
+                        <% if(errors) {%>
+                            <small style="color: red;">
+                                <%= errors %>
+                            </small>
+                            <% } %>
                     </div>
                 </div>
                 <!-- post input area -->
                 <form action="/home/addPost" method="post" enctype="multipart/form-data">
                     <div class="post-input-container">
+
                         <textarea rows="3" name="content"
                             placeholder="What's on your mind, <%= dataUser.Profile.name  %>?"></textarea>
                         <div class="add-post-links">
