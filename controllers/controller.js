@@ -1,7 +1,5 @@
 const { User, Post, Profile } = require('../models')
 const { comparingPassword } = require('../helpers')
-const { Op } = require('sequelize')
-const multer = require('multer')
 
 class Controller {
     static home(req, res) {
@@ -10,7 +8,7 @@ class Controller {
         if (error) {
             errors = error.split(',')
         }
-        res.render('profilePage', { errors })
+        res.render('home', { errors })
     }
 
     static landingPage(req, res) {
@@ -25,7 +23,6 @@ class Controller {
         Post.findAllPosts(searchByContent, User, Profile)
             .then(data => {
                 dataPost = data
-                console.log(dataPost)
                 return User.findLoggedUser(userId, Profile)
             })
             .then(data => {
@@ -93,14 +90,18 @@ class Controller {
     static addPost(req, res) {
         let imageURL = '#'
         if (req.file) {
-            imageURL = req.file.path
+            if (req.file.mimetype === 'image/png' || req.file.mimetype === 'image/jpg' || req.file.mimetype === 'image/jpeg') {
+                imageURL = req.file.path
+            } else {
+                return res.redirect('/home?error=Only .png, .jpg and .jpeg format allowed!')
+            }
         }
         let { userId } = req.session
         let { content } = req.body
         Post.create({ content, imageURL, UserId: userId, vote: 0 })
             .then(data => res.redirect('/home'))
             .catch(err => {
-                if (err.name == 'SequelizeValidationError' || err.name == 'SequelizeUniqueConstraintError' || err == 'Error: Only .png, .jpg and .jpeg format allowed!') {
+                if (err.name == 'SequelizeValidationError' || err.name == 'SequelizeUniqueConstraintError') {
                     let errors = err.errors.map(el => el.message)
                     res.redirect(`/home?error=${errors}`)
                 } else {
@@ -141,7 +142,6 @@ class Controller {
         let { userId } = req.session
         let { UserId } = req.params
         let { error } = req.query
-        console.log(error);
         if (userId != UserId) {
             return res.redirect(`/home?error=Cannot edit other person profile`)
         } else {
@@ -154,11 +154,15 @@ class Controller {
     }
     static editProfile(req, res) {
         let profilePicture = '#'
-        if (req.file) {
-            profilePicture = req.file.path
-        }
         let { userId } = req.session
         let { UserId } = req.params
+        if (req.file) {
+            if (req.file.mimetype === 'image/png' || req.file.mimetype === 'image/jpg' || req.file.mimetype === 'image/jpeg') {
+                profilePicture = req.file.path
+            } else {
+                return res.redirect(`/profile/edit/${UserId}?error=Only .png, .jpg and .jpeg format allowed!`)
+            }
+        }
         let { name, dateOfBirth, aboutMe, gender } = req.body
         if (userId != UserId) {
             return res.redirect(`/home?error=Cannot edit other person profile`)
@@ -177,6 +181,24 @@ class Controller {
         }
     }
 
+    static deleteUser(req, res) {
+        let { userId, userRole } = req.session
+        let { UserId } = req.params
+        if (userRole != 'admin') {
+            return res.redirect('/home')
+        } else {
+            User.findOne({ where: { id: UserId } })
+                .then(data => {
+                    if (data.role == 'admin') {
+                        return res.redirect('/home?error=Cannot delete other admin')
+                    } else {
+                        return User.destroy({ where: { id: UserId } })
+                    }
+                })
+                .then(data => res.redirect('/home'))
+                .catch(err => res.send(err))
+        }
+    }
 }
 
 module.exports = Controller
