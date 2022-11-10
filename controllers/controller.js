@@ -11,13 +11,15 @@ class Controller{
         let {userId} = req.session
         let {searchByUser, searchByContent} = req.query
         let option = {include: {
-            model: User
+            model: User,
+            include: {
+                model: Profile
+            }
         }}
         let dataPost = {}
 
         if(searchByUser){
             option.include.include = {
-                model: Profile,
                 where: {
                     name: {
                         [Op.iLike]: searchByUser
