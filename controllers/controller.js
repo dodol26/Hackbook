@@ -137,7 +137,7 @@ class Controller {
         if (userId != UserId) {
             return res.redirect(`/home?error=Cannot edit other person profile`)
         } else {
-            User.findOne({ where: { id: UserId } })
+            Profile.findOne({ where: { id: UserId } })
                 .then(data => {
                     res.render('editForm', { data })
                 })

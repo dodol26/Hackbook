@@ -23,6 +23,13 @@ module.exports = (sequelize, DataTypes) => {
       return Profile.create(data)
     }
 
+    get dateFormat() {
+      let dd = this.dateOfBirth.getDate().toString().padStart(2, '0')
+      let mm = (this.dateOfBirth.getMonth() + 1).toString().padStart(2, '0')
+      let yyyy = this.dateOfBirth.getFullYear()
+      return `${yyyy}-${mm}-${dd}`
+    }
+
     get genderTitle() {
       if (this.gender === "Male") {
         return `Mr. ${this.name}`
