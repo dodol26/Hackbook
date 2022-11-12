@@ -1,5 +1,6 @@
 const { User, Post, Profile } = require('../models')
 const { comparingPassword } = require('../helpers')
+const { Op } = require('sequelize')
 
 class Controller {
     static home(req, res) {
@@ -205,11 +206,22 @@ class Controller {
     static profilePage(req, res) {
         let { userId } = req.session
         let { UserId } = req.params
-        User.findOne({ where: { id: userId }, include: [Profile] })
-            .then(data => {
-                console.log(data.Profile.profilePicture, "<<", "UserId", UserId)
+        let data
+        User.findOne({ where: { id: userId }, include: [Profile, Post], order: [[Post, 'createdAt', 'DESC']] })
+
+            .then(data1 => {
+                console.log(userId, UserId, '<<<<<<<<<')
+                data = data1
+                //find all user != userId and role 'user'
+                return User.findAll({ include: [Profile], where: { id: { [Op.ne]: userId }, role: 'user' } })
+
+            })
+            //chain get all users role user include profile
+            .then(data2 => {
+
                 if (data.Profile.id == UserId) {
-                    return res.render('profilePage', { data })
+                    console.log(data, data2)
+                    return res.render('profilePage', { data, data2 })
                 } else {
                     return res.redirect('/home?error=Cannot view other person profile')
                 }
