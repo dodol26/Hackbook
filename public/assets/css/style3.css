@@ -844,7 +844,6 @@ nav {
 
 
 /* ---------------- profile page media query ---------- */
-
 @media (max-width:900px) {
     .profile-details {
         flex-wrap: wrap;

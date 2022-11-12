@@ -678,3 +678,39 @@ input:focus+label {
 .new-profile a {
     margin-left: 10px;
 }
+
+@media (max-width:900px) {
+    .profile-details {
+        flex-wrap: wrap;
+    }
+
+    .profile-info {
+        flex-wrap: wrap;
+    }
+
+    .profile-container {
+        padding: 20px 5%;
+    }
+
+    .pd-row div h3 {
+        font-size: 16px;
+    }
+
+    .pd-right {
+        margin-top: 15px;
+        text-align: left;
+    }
+
+    .pd-right button {
+        margin-left: 0;
+        margin-right: 10px;
+    }
+
+    .info-col {
+        flex-basis: 100%;
+    }
+
+    .post-col {
+        flex-basis: 100%;
+    }
+}

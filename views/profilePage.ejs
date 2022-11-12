@@ -13,7 +13,7 @@
 <body>
     <nav>
         <div class="nav-left">
-            <a href="index.html"><img src="images/logo2.png" class="logo"></a>
+            <a href="/home"><img src="images/logo2.png" class="logo"></a>
             <ul>
 
                 <li><img src="images/notification.png"></li>
@@ -24,11 +24,11 @@
 
         <div class="nav-right">
             <div class="search-box">
-                <img src="images/search.png">
+                <img src="../public/assets/images/search.png">
                 <input type="text" placeholder="Search">
             </div>
             <div class="nav-user-icon online" onclick="settingsMenuToggle()">
-                <img src="images/profile-pic.png">
+                <img src="../public/assets/images/member-8.png">
             </div>
 
         </div>
@@ -39,9 +39,13 @@
             </div>
             <div class="settings-menu-inner">
                 <div class="user-profile">
-                    <img src="images/profile-pic.png">
+                    <img src="<%=data.Profile.profilePicture %>">
                     <div>
-                        <p>John Nicholson</p>
+                        <p>
+                            <%= data.Profile.name %>
+                        </p>
+                        <p>
+                        </p>
                         <a href="profile.html">See your profile</a>
                     </div>
                 </div>
@@ -78,13 +82,16 @@
     <!-- ----profile page --------- -->
 
     <div class="profile-container">
-        <img src="images/cover.png" class="cover-img">
+        <img src="../public/assets/images/cover.png" class="cover-img">
         <div class="profile-details">
             <div class="pd-left">
                 <div class="pd-row">
-                    <img src="images/profile.png" class="pd-image">
+                    <!-- show data profilePicture -->
+                    <img src="<%= data.Profile.profilePicture %>" class="pd-image">
                     <div>
-                        <h3>Jack Nicholson</h3>
+                        <h3>
+                            <%= data.Profile.name %>
+                        </h3>
                         <p>120 Friends - 20 mutual</p>
                         <img src="images/member-1.png">
                         <img src="images/member-2.png">
@@ -107,8 +114,9 @@
 
                 <div class="profile-intro">
                     <h3>Intro</h3>
-                    <p class="intro-text">Believe in yourself and you can do unbelievable things. <img
-                            src="images/feeling.png"></p>
+                    <p class="intro-text">
+                        <%= data.Profile.aboutMe %> <img src="images/feeling.png">
+                    </p>
                     <hr>
                     <ul>
                         <li><img src="images/profile-job.png"> Director at 99media Ltd</li>
@@ -183,10 +191,17 @@
             <div class="post-col">
                 <div class="write-post-container">
                     <div class="user-profile">
-                        <img src="images/profile-pic.png">
+                        <h3>
+                            <%= data.Profile.profilePicture %>
+                        </h3>
+                        <img src="<%= data.Profile.profilePicture %>">
                         <div>
-                            <p>John Nicholson</p>
-                            <small>Public <i class="fas fa-caret-down"></i></small>
+                            <p>
+                                <%= data.Profile.name %>
+                            </p>
+                            <small>
+                                <%= data.role %> <i class="fas fa-caret-down"></i>
+                            </small>
                         </div>
                     </div>
 

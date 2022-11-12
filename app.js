@@ -7,6 +7,7 @@ const port = 3000
 app.set('view engine', 'ejs')
 app.use(express.urlencoded({ extended: true }))
 app.use('/public', express.static('public'))
+app.use('/public', express.static('public'))
 
 app.use(session({
   secret: 'keyboard cat',

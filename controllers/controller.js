@@ -202,6 +202,20 @@ class Controller {
                 .catch(err => res.send(err))
         }
     }
+    static profilePage(req, res) {
+        let { userId } = req.session
+        let { UserId } = req.params
+        User.findOne({ where: { id: userId }, include: [Profile] })
+            .then(data => {
+                console.log(data.Profile.profilePicture, "<<", "UserId", UserId)
+                if (data.Profile.id == UserId) {
+                    return res.render('profilePage', { data })
+                } else {
+                    return res.redirect('/home?error=Cannot view other person profile')
+                }
+            })
+            .catch(err => res.send(err))
+    }
 }
 
 module.exports = Controller
